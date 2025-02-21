@@ -103,3 +103,9 @@ jobs:
 
       - name: Output link
         run: echo "${{steps.deploy.outputs.URL}}"
+
+  Print:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print URL
+        run: echo "The URL is ${{steps.deploy.outputs.URL}}"
