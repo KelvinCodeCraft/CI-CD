@@ -79,7 +79,8 @@ jobs:
           path: ./dist
       
       - name: Output contents
-        run: ls 
+        run: ls ./dist
+
       - name: Deploy site
         id: deploy
         uses: ./.github/actions/deployment
@@ -90,5 +91,5 @@ jobs:
           bucketName: ${{ secrets.BUCKETNAME }}
           distFiles: ./dist
 
-      - name: utput link
+      - name: Output link
         run: echo "${{steps.deploy.outputs.URL}}"
