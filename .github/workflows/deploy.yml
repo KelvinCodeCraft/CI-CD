@@ -1,8 +1,13 @@
-name: Deployment
+name: CI/CD for Angular App
+
 on:
   push:
     branches:
-      - master
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -10,42 +15,66 @@ jobs:
       - name: Get code
         uses: actions/checkout@v4
       - name: Load and cache dependencies
-        uses: ./.github/actions/cached_deps
+        uses: ./.github/actions/cached-deps
       - name: Lint code
         run: npm run lint
+
   test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Get code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Load and cache dependencies
-        uses: ./.github/actions/cached_deps
-
-      - name: Test code
-        id: run-tests
-        run: npm run test
-      - name: Upload test report
-        if: failure() && steps.run-tests.outcome == 'failure'
-        uses: actions/upload-artifact@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          name: test-report
-          path: test.json
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get code
-        uses: actions/checkout@v4
-      - name: Install Deps
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
         run: npm ci
-      - name: Build website
-        run: npm run build
-      - name: Upload artifacts
+
+      - name: Run unit tests
+        run: npm run test
+
+      - name: Upload Test Results
         uses: actions/upload-artifact@v4
         with:
-          name: dist-files
-          path: dist
+          name: test-results
+          path: coverage/
+
+
+  build:
+    needs: test 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Build Angular app
+        run: npm run build -- --configuration=production
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -56,11 +85,12 @@ jobs:
       - name: Get build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: dist-files
+          name: dist
           path: ./dist
       
       - name: Output contents
-        run: ls 
+        run: ls ./dist
+
       - name: Deploy site
         id: deploy
         uses: ./.github/actions/deployment
@@ -68,8 +98,14 @@ jobs:
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
-          bucketName: qacohortbucket
+          bucketName: ${{ secrets.BUCKETNAME }}
           distFiles: ./dist
 
-      - name: utput link
+      - name: Output link
         run: echo "${{steps.deploy.outputs.URL}}"
+
+  Print:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print URL
+        run: echo "The URL is ${{steps.deploy.outputs.URL}}"
