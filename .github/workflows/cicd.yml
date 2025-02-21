@@ -101,8 +101,5 @@ jobs:
           bucketName: ${{ secrets.BUCKETNAME }}
           distFiles: ./dist
 
-      # - name: Output link
-      #   run: echo "${{steps.deploy.outputs.URL}}"
-
-      - name: utput link
+      - name: Output link
         run: echo "${{steps.deploy.outputs.URL}}"
