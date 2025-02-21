@@ -38,6 +38,9 @@ importers:
       '@angular/ssr':
         specifier: ^19.1.8
         version: 19.1.8(bz7ryxpcs56pu222nubjnloioi)
+      ci:
+        specifier: ^2.3.0
+        version: 2.3.0
       express:
         specifier: ^4.18.2
         version: 4.21.2
@@ -2238,6 +2241,10 @@ packages:
   ci-info@4.1.0:
     resolution: {integrity: sha512-HutrvTNsF48wnxkzERIXOe5/mlcfFcbfCmwcg6CJnizbSue78AbDt+1cgl26zwn61WFxhcPykPfZrbqjGmBb4A==}
     engines: {node: '>=8'}
+
+  ci@2.3.0:
+    resolution: {integrity: sha512-0MGXkzJKkwV3enG7RUxjJKdiAkbaZ7visCjitfpCN2BQjv02KGRMxCHLv4RPokkjJ4xR33FLMAXweS+aQ0pFSQ==}
+    hasBin: true
 
   clean-stack@2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
@@ -7336,6 +7343,8 @@ snapshots:
   chrome-trace-event@1.0.4: {}
 
   ci-info@4.1.0: {}
+
+  ci@2.3.0: {}
 
   clean-stack@2.2.0: {}
 

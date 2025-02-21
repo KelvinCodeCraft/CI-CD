@@ -38,7 +38,7 @@ jobs:
           path: dist/
 
   test:
-    needs: build  # Run tests only after a successful build
+    needs: build 
     runs-on: ubuntu-latest
 
     steps:
@@ -67,7 +67,7 @@ jobs:
           path: coverage/
 
   deploy:
-    needs: test  # Deploy only if tests pass
+    needs: test  
     runs-on: ubuntu-latest
 
     steps:
