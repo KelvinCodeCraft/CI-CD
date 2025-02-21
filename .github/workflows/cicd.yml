@@ -9,9 +9,7 @@ on:
       - main
 
 jobs:
-  
   test:
-    
     runs-on: ubuntu-latest
 
     steps:
@@ -68,7 +66,7 @@ jobs:
 
 
   deploy:
-    needs: test
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
@@ -77,7 +75,7 @@ jobs:
       - name: Get build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: dist
+          name: dist-files
           path: ./dist
       
       - name: Output contents
