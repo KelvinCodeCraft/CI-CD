@@ -28,9 +28,6 @@ jobs:
       - name: Lint code
         run: npm run lint
 
-      - name: Run tests
-        run: npm run test -- --watch=false --browsers=ChromeHeadless
-
       - name: Build Angular app
         run: npm run build -- --configuration=production
 
@@ -40,8 +37,7 @@ jobs:
           name: dist
           path: dist/
 
-
-    test:
+  test:
     needs: build  # Run tests only after a successful build
     runs-on: ubuntu-latest
 
@@ -71,7 +67,7 @@ jobs:
           path: coverage/
 
   deploy:
-    needs: build
+    needs: test  # Deploy only if tests pass
     runs-on: ubuntu-latest
 
     steps:
