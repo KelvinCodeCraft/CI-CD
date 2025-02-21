@@ -67,23 +67,29 @@ jobs:
           path: coverage/
 
   deploy:
-    # needs: test  
+    needs: build
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Get Code
         uses: actions/checkout@v4
 
-      - name: Download build artifacts
+      - name: Get build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: dist/
-
-      - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/main'
-        uses: JamesIves/github-pages-deploy-action@v4
+          name: dist-files
+          path: ./dist
+      
+      - name: Output contents
+        run: ls 
+      - name: Deploy site
+        id: deploy
+        uses: ./.github/actions/deployment
+        env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
-          branch: gh-pages
-          folder: dist/
-          clean: true
+          bucketName: qacohortbucket
+          distFiles: ./dist
+
+      - name: utput link
+        run: echo "${{steps.deploy.outputs.URL}}"
