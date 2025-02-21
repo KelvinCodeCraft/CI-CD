@@ -94,11 +94,23 @@
             ],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "cli": {
-    "analytics": "2102680c-8cc9-4fc3-8ec5-e276d8ce3e78"
+    "analytics": "2102680c-8cc9-4fc3-8ec5-e276d8ce3e78",
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   }
 }
