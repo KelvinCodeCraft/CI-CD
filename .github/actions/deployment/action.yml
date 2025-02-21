@@ -1,0 +1,22 @@
+name: 'Deploy to S3'
+description: 'Deploy to S3 using Javascript actions'
+inputs:
+  bucketName:
+    description: The bucket Name
+    required: true
+
+  bucketRegion:
+    description: The region we created the bucket in
+    required: false
+    default: us-east-1
+
+  distFiles:
+    description: The artifacts produced by build step
+    required: true
+outputs:
+  URL:
+    description: This is the website URL
+
+runs:
+  using: 'node20'
+  main: 'index.js'

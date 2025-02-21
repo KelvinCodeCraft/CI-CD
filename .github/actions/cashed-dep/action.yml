@@ -16,5 +16,4 @@ runs:
       shell: bash
 
 
-# for steps that uses run you must specify the shell to be used
        
