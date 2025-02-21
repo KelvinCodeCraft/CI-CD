@@ -40,6 +40,36 @@ jobs:
           name: dist
           path: dist/
 
+
+    test:
+    needs: build  # Run tests only after a successful build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Unit Tests (Jest/Karma)
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
+
+      - name: Run Integration Tests (Cypress)
+        run: npm run test:integration
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: coverage/
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
