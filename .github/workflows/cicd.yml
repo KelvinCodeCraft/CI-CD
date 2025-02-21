@@ -64,7 +64,7 @@ jobs:
           path: coverage/
 
   deploy:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
